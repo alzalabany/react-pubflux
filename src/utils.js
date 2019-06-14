@@ -34,19 +34,18 @@ export function combineReducers(reducers) {
         'All actions must contain a type attribute, eg: { type: String, ... }, we will ignore your action',
         action,
       );
-      console.table(state);
       return state;
     }
 
     reducerKeys.forEach((key) => {
       const reducer = reducers[key];
       const previousStateForKey = state[key];
-      const { initalState, eventName } = reducer;
+      const { initialState, eventName } = reducer;
       let nextStateForKey = shouldProc(eventName, action.type) ? reducer(
           previousStateForKey,
           action,
           state || {},
-        ) : previousStateForKey || initalState;
+        ) : previousStateForKey || initialState;
 
       if (typeof nextStateForKey === 'undefined') {
         console.error(
@@ -54,7 +53,7 @@ export function combineReducers(reducers) {
             key
           } returned undefined, you must return something !, we will just ignore your action for this key...`,
         );
-        nextStateForKey = previousStateForKey || initalState;
+        nextStateForKey = previousStateForKey || initialState;
       }
 
       nextState[key] = nextStateForKey;

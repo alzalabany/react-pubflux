@@ -1,4 +1,4 @@
-# react-pubflux
+# React-PubFlux
 
 > a simpler alternative to redux that use mix of pubsub and flux patterns to speed up app building
 
@@ -10,13 +10,19 @@
 npm install --save react-pubflux
 ```
 
+## demo
+
+[Demo example](https://alzalabany.github.io/react-pubflux/)
+
 ## Concept
 
-- same power of redux (immutable store, centralized storage, etc..)
-- WORK with Remote Redux Dev tools too ! *browser extension*
-- split app into 2 distinct areas, UI and SDK
+- same power of redux/flux (immutable store, centralized storage, etc..)
+- Work with Remote Redux Dev tools *browser extension*
+- 0 dependencies, except for "remotedev" which is used in dev mode only
+- ease spliting app into 2 distinct areas, UI and SDK
 - app logic is separated into multiple small functions, each can be configured to run only on certain events, or on any event
 
+![workflow](./workflow.png)
 
 so reasoning is, UI emit events, and that's it, fire and forget..
 and UI react to changes in app state.

@@ -104,7 +104,6 @@ class ReactPubFlux extends React.Component {
          if (newState && newState !== this.state) {
            this.setState(newState, () => resolve(this.state));
          } else {
-           console.log('state did not change')
            return resolve(newState);
          }
        });
