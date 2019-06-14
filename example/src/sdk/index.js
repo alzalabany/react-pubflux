@@ -19,3 +19,5 @@ export const actions = [
   ...Config.actions,
   ...Auth.actions
  ];
+
+export const STORAGE_ADDR = '/APP/V1/'

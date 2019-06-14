@@ -1,4 +1,4 @@
-import { leaf, initialState } from "./const";
+import { leaf, initialState, noobUser } from "./const";
 import {LOGIN_SUCCESS, LOGIN_RESET} from '../events';
 
 // path: store.auth
@@ -20,4 +20,5 @@ authReducer.initialState = initialState;
 
 export default authReducer;
 
-export const getUsers = store => store[leaf] || initialState;
+export const getAuth = store => store[leaf] || initialState;
+export const getUserById = (store, id) => getAuth(store)[id] || noobUser;

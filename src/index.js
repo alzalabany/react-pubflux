@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connectViaExtension, extractState } from 'remotedev';
 import t from 'prop-types';
 import {
   subscribe,
@@ -8,7 +7,31 @@ import {
   isFunction,
   INIT_ACTION } from './utils';
 
-const remotedev = connectViaExtension();
+function hasRemoteDev(){
+  return typeof window !== 'undefined' && !!window.__REDUX_DEVTOOLS_EXTENSION__;
+}
+
+function buildRemoteDev(){
+  if( !hasRemoteDev() )
+    return {
+      send: noob,
+      subscribe: noob,
+      init: noob,
+    }
+  return require('remotedev').connectViaExtension()
+}
+
+function extractStateFactory(){
+  if(hasRemoteDev())
+    return require('remotedev').extractState
+
+  return noob;
+}
+
+
+const remotedev = buildRemoteDev();
+const extractState = extractStateFactory();
+
 const noob = () => null;
 const Context = React.createContext({
   listen: noob,
@@ -81,6 +104,7 @@ class ReactPubFlux extends React.Component {
          if (newState && newState !== this.state) {
            this.setState(newState, () => resolve(this.state));
          } else {
+           console.log('state did not change')
            return resolve(newState);
          }
        });
@@ -95,8 +119,6 @@ class ReactPubFlux extends React.Component {
      if (Array.isArray(this.emitter[event])) {
        actionCreators = actionCreators.concat(this.emitter[event]);
      }
-
-     remotedev.send({ type: `@@${event}`, ...data }, this.state);
 
      const promises = actionCreators.map(
        async fn => await fn(event, data, this.emit, this.getState),
@@ -194,4 +216,5 @@ export {
   Connect,
   ReactPubFlux as Provider,
 };
+
 export default ReactPubFlux;

@@ -58,5 +58,7 @@
   "files": [
     "dist"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "remotedev": "^0.2.9"
+  }
 }

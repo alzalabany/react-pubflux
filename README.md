@@ -94,7 +94,17 @@ export default combineReducers({
 })
 ```
 
-thats simpleset form of reducer and selectors
+## Selectors
+
+we recommend you follow example folder.
+
+- export default function from reducer.js file as your reducer
+- export named exports for selectors.
+- selectors you pass into provider has 2 cool features
+  - it automaticlly get store as first argument, so u dont have to pass store yourself everytime you use it
+  - avoid import hell !
+
+example folder contain simpleset form of reducer and selectors
 
 ## Actions
 

@@ -17,6 +17,15 @@ export function subscribe(name, fn, eventStore) {
 export function combineReducers(reducers) {
   const reducerKeys = Object.keys(reducers);
   const emptyState = {};
+
+  const shouldProc = (eventName, type) =>{
+    if(!eventName)return true;
+    if(typeof eventName === 'string' && eventName === type) return true;
+    if(Array.isArray(eventName) && eventName.indexOf(type) > -1) return true;
+
+    return false;
+  }
+
   return function combination(state = emptyState, action) {
     let hasChanged = false;
     const nextState = {};
@@ -32,12 +41,12 @@ export function combineReducers(reducers) {
     reducerKeys.forEach((key) => {
       const reducer = reducers[key];
       const previousStateForKey = state[key];
-      const { initalState } = reducer;
-      let nextStateForKey = reducer(
-        previousStateForKey,
-        action,
-        state || initalState,
-      );
+      const { initalState, eventName } = reducer;
+      let nextStateForKey = shouldProc(eventName, action.type) ? reducer(
+          previousStateForKey,
+          action,
+          state || {},
+        ) : previousStateForKey || initalState;
 
       if (typeof nextStateForKey === 'undefined') {
         console.error(

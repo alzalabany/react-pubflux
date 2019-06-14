@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 
 import { withFlux } from 'react-pubflux'
-import { LOGIN_START, LOGIN_END, ATTEMPT_LOGIN , CONFIG, CONFIG_RESET } from './sdk/events';
-
+import { LOGIN_START, LOGIN_END, ATTEMPT_LOGIN , LOGIN_RESET, CONFIG, CONFIG_RESET } from './sdk/events';
+import UserComponent from './UserComponent'
 class App extends Component {
 
+  state = {loading: null};
 
   componentDidMount(){
     const { listen } = this.props;
@@ -19,7 +20,10 @@ class App extends Component {
   }
 
   setConfig = () => {
-    this.props.emit(CONFIG, {value: Math.random()}, true) // 3rd param === true mean send this directly to reducer :)
+    // 3rd param === true mean send this directly to reducer :)
+    // i dont recommend this way because it will ignore all actions, yet it exsists for convience
+    // this will go --> rootReducer --> update store --> back
+    this.props.emit(CONFIG, {data:{randome: Math.random()}}, true)
   }
 
   clearConfig = () => {
@@ -28,20 +32,27 @@ class App extends Component {
 
   login = () => {
     this.props.emit(ATTEMPT_LOGIN, {
-      username:'demo'+ parseInt( Math.random()*100 ),
+      username:'demo',
       password:'demo'
     });
   }
 
+  resetAuth = () => this.props.emit(LOGIN_RESET)
+
   render () {
+    const {loading} = this.state
+    const ids = Object.keys(this.props.appUsers);
     return (
       <div>
-        <h1> Hello world </h1>
+        <h1> {loading === true ? 'Loading...' : loading === null ? 'Hello' : 'Finished'} </h1>
 
         <button onClick={this.login}> login :) </button>
+        <button onClick={this.resetAuth}> Clearn login </button>
         <button onClick={this.setConfig}> Set value to config directly without any actions </button>
         <button onClick={this.clearConfig}> reset config </button>
-
+        <ul>
+          {ids.map(id=><UserComponent id={id} key={id} />)}
+        </ul>
         <pre><code>{JSON.stringify(this.props,null, 2)}</code></pre>
       </div>
     )

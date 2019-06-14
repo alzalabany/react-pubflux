@@ -3,6 +3,7 @@ import {
   LOGIN_FAILED,
   LOGIN_START,
   LOGIN_END,
+  LOGIN_RESET,
   LOGIN_SUCCESS
 } from '../events';
 
@@ -10,7 +11,7 @@ function log(eventName, eventData){
   console.log(eventName);
   console.table(eventData);
 
-  return void;
+  return ;
 }
 
 async function attempt(_, data, emit) {
@@ -26,8 +27,8 @@ async function attempt(_, data, emit) {
   const login = await new Promise(resolve=>{
     // memic api call !
     const user = {
-      id: parseInt( Math.random()*100 ), // randome id
-      username: data.username
+      id: parseInt( Math.random()*100 , 0), // randome id
+      username
     }
     const data = {
       ok: true,

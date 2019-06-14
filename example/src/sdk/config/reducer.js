@@ -17,3 +17,5 @@ configReducer.initialState = initialState;
 configReducer.eventName = [CONFIG, CONFIG_RESET];
 
 export default configReducer;
+
+export const getConfig = store => store[leaf] || initialState;

@@ -5,6 +5,7 @@ import {
 
 // i'm a noob fn. i will just use this to pass along events to reducer
 function noob(eventName, eventData){
+  console.log('noob runniung', eventName);
   return {
     type: eventName,
     data: eventData

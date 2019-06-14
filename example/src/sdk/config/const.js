@@ -1,5 +1,5 @@
 
 export const leaf = 'config';
-export const initalState = {
-  randome: Math.random()
+export const initialState = {
+  randome: 0
 }
