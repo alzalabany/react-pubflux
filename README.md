@@ -13,6 +13,7 @@ npm install --save react-pubflux
 ## Concept
 
 - same power of redux (immutable store, centralized storage, etc..)
+- WORK with Remote Redux Dev tools too ! *browser extension*
 - split app into 2 distinct areas, UI and SDK
 - app logic is separated into multiple small functions, each can be configured to run only on certain events, or on any event
 
@@ -21,6 +22,14 @@ so reasoning is, UI emit events, and that's it, fire and forget..
 and UI react to changes in app state.
 
 SDK job is to listen to those events, and decide what to do with it. result can be punch more events, or a change to app state.
+
+## so Why again ??
+
+in perfect world, your UI developers now do not need to know anything about your SDK/how data getting fetched. just tell them what events to listen for, and they are good to go :).
+
+and your sdk developers do not need to know anything about how data is presented, they are responsible for logic part powering your platform.
+
+Team work.
 
 
 ## Usage
@@ -115,7 +124,61 @@ async function shouldICare(event, eventData, emit, getState) {
 
 }
 
+shouldICare.eventName = 'CONFIG';
+
+async function logger(event, eventData){
+  // i log everything to console ! yp that easy
+  console.log('Event :'+event);
+  console.table(eventData);
+}
+// no need for logger.eventName, we want this to run with any emit.
+
+
+export default [ logger, shouldICare ] // plug this into provider actions
 ```
+
+## Emitting events
+
+now that we have everything in place, enough with sdk developement, lets code our UI.
+
+its time to try it out..
+
+```jsx
+class Example extends Component {
+  static stateToProps = (store, selectors) => ({ data: selectors.config.getConfig(store)}); // selector object we passed to provider is given here to spare you importing hell.
+
+  componentDidMount(){
+    this.unlisten = this.props.listen('YO_ANOTHER_FUNCTION',()=>{
+      // did you know you can listen for events here too ?
+      // call this.unlisten() to unsubscribe..
+    })
+  }
+
+  add = (num) => {
+    const { data } = this.props;
+    const value = data.value || 0;
+
+    this.props.emit('CONFIG',{value: value + num});
+  }
+
+  render(){
+    const {data} = this.props;
+
+    return <div>
+      <button onClick={this.add.bind(this, 1)}>Add one</button>
+      <button onClick={this.add.bind(this, -1)}>Subtract</button>
+      <h1> {data.value} </h1>
+    </div>
+  }
+}
+
+export default withFlux( Example );
+
+```
+
+Example provided i hope clear things up !
+
+Happy coding
 
 
 ## License
