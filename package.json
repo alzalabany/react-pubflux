@@ -1,6 +1,6 @@
 {
   "name": "react-pubflux",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a simpler alternative to redux that use mix of pubsub and flux patterns to speed up app building",
   "author": "alzalabany",
   "license": "MIT",
