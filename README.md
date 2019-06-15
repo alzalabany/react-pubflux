@@ -14,6 +14,11 @@ npm install --save react-pubflux
 
 [Demo example](https://alzalabany.github.io/react-pubflux/)
 
+## tutorial
+
+[Demo Tutorial: Create a Todo app in 10min with pubflux](./TODO_APP.md)
+
+
 ## Concept
 
 - same power of redux/flux (immutable store, centralized storage, etc..)
